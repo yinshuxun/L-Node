@@ -1,7 +1,8 @@
-'use strict';
-
-var _client = require('../utils/client');
-
-(0, _client.createRequest)(); // import req from '../utils/info'
+// import req from '../utils/info'
 //
 // console.log(req(1746151).getBody('utf-8'));
+
+import {get} from '../utils/client'
+
+
+console.log(get('www.baidu.com'))

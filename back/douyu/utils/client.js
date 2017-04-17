@@ -1,24 +1,29 @@
-'use strict';
+import http from 'http'
+import util from 'util'
+import queryString from 'querystring'
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.createRequest = exports.getReq = undefined;
+export const createRequest = async(host, port, path, method, headers, encoding = 'utf-8') => {
+  const options = {
+    host, port, path, method, headers
+  }
+  let body = ''
 
-var _http = require('http');
+  let req = await http.request(options, res => {
+    // console.log(`STATUS:${res.statusCode}`);
+    // console.log(`HEADERS:${JSON.stringify(res.headers)} `);
+    res.setEncoding(encoding)
+    res.on('data', chunk => {
+      body += chunk
+    });
+  }).on('error', (e) => {
+    util.log(`problem with request ${e.message}`)
+  })
 
-var _http2 = _interopRequireDefault(_http);
+  req.end()
 
-var _url = require('url');
+  return body.then(e=>{console.log(e)})
+}
 
-var _url2 = _interopRequireDefault(_url);
-
-var _queryString = require('queryString');
-
-var _queryString2 = _interopRequireDefault(_queryString);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getReq = exports.getReq = async function getReq(url) {};
-
-var createRequest = exports.createRequest = function createRequest(host, port, path, method, headers) {};
+export const get = url => {
+  return createRequest(url, '', '', 'get')
+}
